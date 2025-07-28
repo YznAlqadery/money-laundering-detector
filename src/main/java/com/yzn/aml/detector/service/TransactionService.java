@@ -3,6 +3,7 @@ package com.yzn.aml.detector.service;
 import com.yzn.aml.detector.model.PaymentFormat;
 import com.yzn.aml.detector.model.Transaction;
 import com.yzn.aml.detector.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
+    @Transactional
     public void importCSVToDB(String path) throws FileNotFoundException {
         if (transactionRepository.count() > 0) {
             System.out.println("Transactions already exist in DB — skipping import.");
@@ -82,5 +84,39 @@ public class TransactionService {
 
     public List<Transaction> getTransactions(){
         return transactionRepository.findAll();
+    }
+
+    public Transaction getTransactionById(Integer id){
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No Transaction with this " + id +" found"));
+        return transaction;
+    }
+
+    public Transaction createTransaction(Transaction transaction){
+        return transactionRepository.save(transaction);
+    }
+
+    public Transaction updateTransaction(Transaction updatedTransaction, Integer id){
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No Transaction with " + id + " found."));
+
+        transaction.setTimestamp(updatedTransaction.getTimestamp() != null ? updatedTransaction.getTimestamp(): transaction.getTimestamp());
+        transaction.setFromBank(updatedTransaction.getFromBank() != null ? updatedTransaction.getFromBank(): transaction.getFromBank() );
+        transaction.setFromAccount(updatedTransaction.getFromAccount() != null ? updatedTransaction.getFromAccount(): transaction.getFromAccount() );
+        transaction.setToBank(updatedTransaction.getToBank() != null ? updatedTransaction.getToBank(): transaction.getToBank() );
+        transaction.setToAccount(updatedTransaction.getToAccount() != null ? updatedTransaction.getToAccount(): transaction.getToAccount() );
+        transaction.setAmountReceived(updatedTransaction.getAmountReceived() != null ? updatedTransaction.getAmountReceived(): transaction.getAmountReceived() );
+        transaction.setReceivingCurrency(updatedTransaction.getReceivingCurrency() != null ? updatedTransaction.getReceivingCurrency(): transaction.getReceivingCurrency() );
+        transaction.setAmountPaid(updatedTransaction.getAmountPaid() != null ? updatedTransaction.getAmountPaid(): transaction.getAmountPaid() );
+        transaction.setPaymentCurrency(updatedTransaction.getPaymentCurrency() != null ? updatedTransaction.getPaymentCurrency(): transaction.getPaymentCurrency() );
+        transaction.setPaymentFormat(updatedTransaction.getPaymentFormat() != null ? updatedTransaction.getPaymentFormat(): transaction.getPaymentFormat() );
+        transaction.setLaundering(updatedTransaction.getLaundering() != null ? updatedTransaction.getLaundering(): transaction.getLaundering() );
+
+        transactionRepository.save(transaction);
+        return transaction;
+    }
+
+    public void deleteTransaction(Integer id){
+        transactionRepository.deleteById(id);
     }
 }
