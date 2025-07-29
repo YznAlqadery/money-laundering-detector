@@ -40,7 +40,6 @@ public class ImportCSVToDB implements CommandLineRunner {
             int batchSize = 5000;
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-
             //int totalImported = 0;
 
             while ((line = reader.readLine()) != null) {
