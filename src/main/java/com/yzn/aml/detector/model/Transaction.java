@@ -1,5 +1,6 @@
 package com.yzn.aml.detector.model;
 
+import com.yzn.aml.detector.enums.PaymentFormat;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

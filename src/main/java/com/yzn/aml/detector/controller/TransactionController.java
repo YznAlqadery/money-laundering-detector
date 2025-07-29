@@ -3,11 +3,10 @@ package com.yzn.aml.detector.controller;
 
 import com.yzn.aml.detector.model.Transaction;
 import com.yzn.aml.detector.service.TransactionService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -20,11 +19,9 @@ public class TransactionController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Transaction>> getTransactions() throws FileNotFoundException {
-        String filePath = "C:\\Users\\yazan\\Desktop\\CSV_DataSets\\HI-Medium_Trans.csv";
-        transactionService.importCSVToDB(filePath);
+    public ResponseEntity<Page<Transaction>> getTransactions(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "20") Integer size )  {
 
-        return ResponseEntity.ok(transactionService.getTransactions());
+        return ResponseEntity.ok(transactionService.getTransactions(page,size));
     }
 
     @GetMapping("/{id}")
