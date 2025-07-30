@@ -1,4 +1,4 @@
-package com.yzn.aml.detector.service;
+package com.yzn.aml.detector.config;
 
 import com.yzn.aml.detector.enums.PaymentFormat;
 import com.yzn.aml.detector.model.Transaction;
