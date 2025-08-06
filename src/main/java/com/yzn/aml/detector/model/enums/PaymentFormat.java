@@ -1,4 +1,4 @@
-package com.yzn.aml.detector.enums;
+package com.yzn.aml.detector.model.enums;
 
 public enum PaymentFormat {
     REINVESTMENT,
