@@ -26,7 +26,7 @@ public class ImportCSVToDB implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        String filePath = "C:\\Users\\yazan\\Desktop\\CSV_DataSets\\HI-Medium_Trans.csv";
+        String filePath = "C:\\Users\\yazan\\Desktop\\CSV_DataSets\\HI-Small_Trans.csv";
 
         if (transactionRepository.count() > 0) {
            // System.out.println("Data already imported. Skipping import.");
@@ -39,7 +39,7 @@ public class ImportCSVToDB implements CommandLineRunner {
             List<Transaction> batch = new ArrayList<>();
             int batchSize = 5000;
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm");
             //int totalImported = 0;
 
             while ((line = reader.readLine()) != null) {
